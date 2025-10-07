@@ -26,16 +26,24 @@ pub const Game = struct {
         self.cols = cols;
         const total_cells = (rows * cols);
         self.cells = try allocator.alloc(Cell, @intCast(total_cells));
-        var rng: u64 = 0xdeadbeefdeadbeef;
-        for (0..@intCast(total_cells)) |i| {
-            rng = splitMix64(rng);
-            if ((rng % 2) == 0) {
-                self.cells[i] = Cell.Alive;
-            } else {
-                self.cells[i] = Cell.Dead;
-            }
-        }
-
+        // var rng: u64 = 0xdeadbeefdeadbeef;
+        // for (0..@intCast(total_cells)) |i| {
+        //     rng = splitMix64(rng);
+        //     if ((rng % 2) == 0) {
+        //         self.cells[i] = Cell.Alive;
+        //     } else {
+        //         self.cells[i] = Cell.Dead;
+        //     }
+        // }
+        
+        // R-Pentomino pattern
+        const mid_row = @divFloor(rows, 2);
+        const mid_col = @divFloor(cols, 2);
+        self.setCell(@intCast(mid_row), @intCast(mid_col), Cell.Alive);
+        self.setCell(@intCast(mid_row + 1), @intCast(mid_col), Cell.Alive);
+        self.setCell(@intCast(mid_row - 1), @intCast(mid_col), Cell.Alive);
+        self.setCell(@intCast(mid_row), @intCast(mid_col - 1), Cell.Alive);
+        self.setCell(@intCast(mid_row - 1), @intCast(mid_col + 1), Cell.Alive);
     }
 
     pub fn deinit(self: *Game) void {
@@ -94,9 +102,9 @@ pub const Game = struct {
 
     fn countAliveNeighbors(self: *Game, row: u32, col: u32) u8 {
         var count: u8 = 0;
-        for ( 0..2) |pdr| {
+        for ( 0..3) |pdr| {
             const dr: i32 = @as(i32, @intCast(pdr)) - 1;
-            for ( 0..2) |pdc| {
+            for ( 0..3) |pdc| {
                 const dc: i32 = @as(i32, @intCast(pdc)) - 1;
                 if (dr == 0 and dc == 0) continue;
                 const newRow = @as(i32, @intCast(row)) + dr;

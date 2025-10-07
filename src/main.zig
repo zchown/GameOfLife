@@ -3,11 +3,11 @@ const rl = @import("raylib");
 const gr = @import("gameRenderer.zig");
 
 pub fn main() void {
-    const screenWidth = 800;
-    const screenHeight = 800;
+    const screenWidth = 1024;
+    const screenHeight = 1024;
 
     var renderer = gr.Renderer.new();
-    renderer.init(std.heap.page_allocator, 50, 50, screenWidth, screenHeight) catch {
+    renderer.init(std.heap.page_allocator, 128, 128, screenWidth, screenHeight) catch {
         std.debug.print("Failed to initialize renderer\n", .{});
         return;
     };
@@ -18,18 +18,19 @@ pub fn main() void {
 
     rl.setTargetFPS(60);
 
-    var timeAccumulator: f64 = 0.0;
+    // var timeAccumulator: f64 = 0.0;
 
     while (!rl.windowShouldClose()) {
         if (rl.isKeyPressed(rl.KeyboardKey.space)) {
             renderer.game_state.randomize();
         }
 
-        timeAccumulator += rl.getFrameTime();
-        if (timeAccumulator >= 0.5) {
-            renderer.update();
-            timeAccumulator = 0.0;
-        }
+        // timeAccumulator += rl.getFrameTime();
+        // if (timeAccumulator >= 0.1) {
+            // renderer.update();
+            // timeAccumulator = 0.0;
+        // }
+        renderer.update();
 
         rl.beginDrawing();
         defer rl.endDrawing();
