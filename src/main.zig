@@ -11,8 +11,8 @@ pub fn main() !void {
 
     // rl.setTargetFPS(60);
 
-    const gridWidth = 4096 * 2;
-    const gridHeight = 4096 * 2;
+    const gridWidth = 4096 * 4;
+    const gridHeight = 4096 * 4;
 
     var rtA = try rl.loadRenderTexture(gridWidth, gridHeight);
     var rtB = try rl.loadRenderTexture(gridWidth, gridHeight);
